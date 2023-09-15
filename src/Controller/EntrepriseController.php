@@ -2,17 +2,20 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\Entreprise;
+use App\Repository\EntrepriseRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class EntrepriseController extends AbstractController
 {
     #[Route('/entreprise', name: 'app_entreprise')]
-    public function index(): Response
+    public function index(EntrepriseRepository $entrepriseRepository): Response
     {
+        $entreprises = $entrepriseRepository->findBy(["ville" => "STRASBOURG"], ["raisonSociale" => "ASC"]);
         return $this->render('entreprise/index.html.twig', [
-            'controller_name' => 'EntrepriseController',
+            'entreprises' => $entreprises
         ]);
     }
 }
